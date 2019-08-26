@@ -33,11 +33,21 @@ function get_cpu() {
   return "{0} ({1})".format(model, cores);
 }
 
+function get_mem() {
+  let freemem = Number.parseFloat(os.freemem() / 1024 ** 2).toFixed(0);
+  let totalmem = Number.parseFloat(os.totalmem() / 1024 ** 3).toFixed(0);
+
+  return "{0} MB / {1} GB".format(freemem, totalmem);
+}
+
 // Main Program
 
 table.push(
-  { 'Hostname': os.hostname()},
-  { 'CPU': get_cpu() }, 
-  { 'GPU': "una Nvidia muy tocha" });
+  { Hostname: os.hostname() },
+  { CPU: get_cpu() },
+  { GPU: "una Nvidia muy tocha".bold.green },
+  { Memory: get_mem() }
+);
 
+// Print the table
 console.log(table.toString());
