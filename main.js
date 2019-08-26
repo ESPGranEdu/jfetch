@@ -1,6 +1,6 @@
 "use strict";
 //  Libraries
-
+const sys = require("systeminformation");
 const os = require("os");
 const color = require("colors");
 const Table = require("cli-table");
@@ -18,6 +18,7 @@ String.prototype.format = function() {
 };
 
 // Fetcher functions
+
 function get_cpu() {
   let model = os.cpus()[0]["model"];
   let cores = os.cpus().length;
@@ -35,19 +36,45 @@ function get_cpu() {
 
 function get_mem() {
   let freemem = Number.parseFloat(os.freemem() / 1024 ** 2).toFixed(0);
-  let totalmem = Number.parseFloat(os.totalmem() / 1024 ** 3).toFixed(0);
+  let totalmem =
+    Number.parseFloat(os.totalmem() / 1024 ** 3)
+      .toFixed(0)
+      .toString() + " GB";
 
-  return "{0} MB / {1} GB".format(freemem, totalmem);
+  // If Free Memory is higher than 1024 MB, converto to GB with 1 decimal point
+  if (freemem >= 1024) {
+    freemem =
+      Number.parseFloat(freemem / 1024)
+        .toFixed(1)
+        .toString() + " GB";
+  } else {
+    freemem = freemem.toString() + " MB";
+  }
+  return "{0} / {1} ".format(freemem, totalmem);
 }
 
+function get_gpu() {
+  const model = sys.graphics(function(data, err) {
+    if (err) {
+      console.log(err);
+    }
+    if (data) {
+      let gpu = data["controllers"][0]["model"];
+      console.log(parsed);
+    }
+  });
+  return model;
+}
 // Main Program
 
-table.push(
-  { Hostname: os.hostname() },
-  { CPU: get_cpu() },
-  { GPU: "una Nvidia muy tocha".bold.green },
-  { Memory: get_mem() }
-);
+// table.push(
+//   { Hostname: os.hostname() },
+//   { CPU: get_cpu() },
+//   { GPU: "" },
+//   { Memory: get_mem() }
+// );
 
-// Print the table
-console.log(table.toString());
+// // Print the table
+// console.log(table.toString());
+
+get_gpu();
