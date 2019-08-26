@@ -1,7 +1,11 @@
 //  Libraries
+
 const os = require("os");
 const color = require("colors");
+const Table = require("cli-table");
+const cli = require('commander');
 
+const table = new Table();
 //Implementation of format for JavaScript
 String.prototype.format = function() {
   a = this;
@@ -20,10 +24,9 @@ function get_cpu() {
 
 // Main Program
 
-const display = function() {
-  console.log("/t"+os.hostname());
-  console.log("CPU: {0}".format(get_cpu).bold.blue);
-  console.log("GPU: {0}".format("Una mierda de NVIDIA").bold.green);
-};
+table.push(
+  {'CPU': get_cpu()},
+  {'GPU': 'una Nvidia muy tocha'}
+);
 
-display();
+console.log(table.toString());
