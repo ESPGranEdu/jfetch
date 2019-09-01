@@ -5,15 +5,15 @@ const command = require("child_process"),
   os = require("os"),
   getos = require("getos"),
   cli = require("commander"),
-  color = require("colors");
+  color = require("colors"),
+  ip = require("ip");
 
 // Fetcher Functions
 function get_hostname() {
   return os.hostname().bold;
 }
 function get_shell() {
-  let shell = new String(os.userInfo()["shell"]);
-  return shell;
+  return os.userInfo()["shell"].bold.yellow;
 }
 function get_cpu() {
   let model = os.cpus()[0]["model"];
@@ -31,7 +31,6 @@ function get_cpu() {
 
   return `${model} (${cores})`;
 }
-//TODO Recalculate Used Memory to display properly
 
 function get_mem() {
   let useMem = Number.parseFloat(
@@ -52,7 +51,7 @@ function get_mem() {
   } else {
     useMem = useMem.toString() + " MB";
   }
-  return `${useMem} / ${totalMem}`;
+  return `${useMem} / ${totalMem}`.bold;
 }
 
 function get_gpu() {
@@ -61,27 +60,31 @@ function get_gpu() {
     .toString()
     .trim();
 
-  if (!info.search("NVIDIA")) return `${info.bold.green}`;
-  if (!info.search("AMD")) return `${info.bold.red}`;
-  if (!info.search("Intel")) return `${info.bold.blue}`;
+  if (!info.search("NVIDIA")) return info.bold.green;
+  if (!info.search("AMD")) return info.bold.red;
+  if (!info.search("Intel")) return info.bold.blue;
 
   return `${info.bold.orange}`;
 }
 
 function get_release() {
-  return os.release();
+  return os.release().bold;
 }
 
 function get_ipAddress() {
-  const netinfo = os.networkInterfaces();
-  if (netinfo["enp3s0"]) {
-    return `${netinfo["enp3s0"][0]["address"]}`;
-  } else if (netinfo["eth0"]) {
-    return `${netinfo["eth0"][0]["address"]}`;
-  }
+  return ip.address().bold;
 }
 //TODO Fix this function to get the OS name
-function get_os() {}
+function get_os() {
+  const osName = new Object(
+    getos(function(err, os) {
+      if (err) console.error(err);
+      return os;
+    })
+  );
+
+  return osName["dist"] == true ? "OK" : "NoOK";
+}
 
 // Export the functions to be avaliable for main.js
 

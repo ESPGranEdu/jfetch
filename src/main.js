@@ -10,11 +10,11 @@ const table = new Table();
 
 table.push(
   { Hostname: fetch.get_hostname() },
-  // { OS: fetch.get_os() },
+  { OS: fetch.get_os() },
   { Release: fetch.get_release() },
-  // { Shell: fetch.get_shell() },
+  { Shell: fetch.get_shell() },
   { CPU: fetch.get_cpu() },
-  // { GPU: fetch.get_gpu() },
+  { GPU: fetch.get_gpu() },
   { Memory: fetch.get_mem() },
   { IP: fetch.get_ipAddress() }
 );
