@@ -3,7 +3,6 @@
 
 const command = require("child_process"),
   os = require("os"),
-  getos = require("getos"),
   cli = require("commander"),
   color = require("colors"),
   ip = require("ip");
@@ -55,16 +54,16 @@ function get_mem() {
 }
 
 function get_gpu() {
-  const info = command
+  const gpuinfo = command
     .execSync('lspci | grep VGA | cut -d ":" -f3 | cut -d "(" -f1')
     .toString()
     .trim();
 
-  if (!info.search("NVIDIA")) return info.bold.green;
-  if (!info.search("AMD")) return info.bold.red;
-  if (!info.search("Intel")) return info.bold.blue;
+  if (!gpuinfo.search("NVIDIA")) return gpuinfo.bold.green;
+  if (!gpuinfo.search("AMD")) return gpuinfo.bold.red;
+  if (!gpuinfo.search("Intel")) return gpuinfo.bold.blue;
 
-  return `${info.bold.orange}`;
+  return gpuinfo.bold.orange;
 }
 
 function get_release() {
@@ -74,16 +73,22 @@ function get_release() {
 function get_ipAddress() {
   return ip.address().bold;
 }
-//TODO Fix this function to get the OS name
-function get_os() {
-  const osName = new Object(
-    getos(function(err, os) {
-      if (err) console.error(err);
-      return os;
-    })
-  );
 
-  return osName["dist"] == true ? "OK" : "NoOK";
+function get_os() {
+  const osName = command
+    .execSync("cat /etc/os-release | grep ^NAME | cut -d '\"' -f2")
+    .toString()
+    .trim();
+
+  // Color the name depending of the OS Name
+  if (osName == "Arch Linux") return osName.bold.cyan;
+  if (osName == "Ubuntu") return osName.bold.orange;
+  if (osName == "Fedora") return osName.bold.blue;
+  if (osName == "OpenSuse") return osName.bold.green;
+  if (osName == "Gentoo") return osName.bold.magenta;
+  if (osName == "Debian") return osName.bold.red;
+
+  return osName.bold.orange;
 }
 
 // Export the functions to be avaliable for main.js
