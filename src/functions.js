@@ -55,7 +55,7 @@ function get_mem() {
 
 function get_gpu() {
   const gpuinfo = command
-    .execSync('lspci | grep VGA | cut -d ":" -f3 | cut -d "(" -f1')
+    .execSync("lspci | grep VGA | cut -d: -f3")
     .toString()
     .trim();
 
@@ -76,17 +76,17 @@ function get_ipAddress() {
 
 function get_os() {
   const osName = command
-    .execSync("cat /etc/os-release | grep ^NAME | cut -d '\"' -f2")
+    .execSync("hostnamectl | grep 'Operating System' | cut -d: -f2")
     .toString()
     .trim();
 
   // Color the name depending of the OS Name
-  if (osName == "Arch Linux") return osName.bold.cyan;
-  if (osName == "Ubuntu") return osName.bold.orange;
-  if (osName == "Fedora") return osName.bold.blue;
-  if (osName == "OpenSuse") return osName.bold.green;
-  if (osName == "Gentoo") return osName.bold.magenta;
-  if (osName == "Debian") return osName.bold.red;
+  if (!osName.search("Arch Linux")) return osName.bold.cyan;
+  if (!osName.search("Ubuntu")) return osName.bold.orange;
+  if (!osName.search("Fedora")) return osName.bold.blue;
+  if (!osName.search("OpenSuse")) return osName.bold.green;
+  if (!osName.search("Gentoo")) return osName.bold.magenta;
+  if (!osName.search("Debian")) return osName.bold.red;
 
   return osName.bold.orange;
 }
