@@ -55,7 +55,7 @@ function get_mem() {
 
 function get_gpu() {
   const gpuinfo = command
-    .execSync('lspci | grep VGA | cut -d ":" -f3 | cut -d "(" -f1')
+    .execSync("lspci | grep VGA | cut -d: -f3")
     .toString()
     .trim();
 
