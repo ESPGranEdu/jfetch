@@ -3,9 +3,9 @@
 
 const command = require("child_process"),
   os = require("os"),
-  cli = require("commander"),
   color = require("colors"),
-  ip = require("ip");
+  ip = require("ip"),
+  fs = require("fs");
 
 // Fetcher Functions
 function get_hostname() {
@@ -75,23 +75,27 @@ function get_ipAddress() {
 }
 
 function get_os() {
-  const osName = command
-    .execSync("cat /etc/os-release | grep ^NAME | cut -d '\"' -f2")
-    .toString()
-    .trim();
+  let osInfo = fs.readFileSync("/etc/os-release").toString();
+  let regex = /^NAME=.+/;
+  let osName = regex
+    .exec(osInfo)[0]
+    .slice(5)
+    .replace(/\"/g, "");
 
   // Color the name depending of the OS Name
-  if (osName == "Arch Linux") return osName.bold.cyan;
-  if (osName == "Ubuntu") return osName.bold.orange;
-  if (osName == "Fedora") return osName.bold.blue;
-  if (osName == "OpenSuse") return osName.bold.green;
-  if (osName == "Gentoo") return osName.bold.magenta;
-  if (osName == "Debian") return osName.bold.red;
+
+  if (!osName.search("Arch Linux")) return osName.bold.cyan;
+  if (!osName.search("Ubuntu")) return osName.bold.orange;
+  if (!osName.search("Fedora")) return osName.bold.blue;
+  if (!osName.search("OpenSuse")) return osName.bold.green;
+  if (!osName.search("Gentoo")) return osName.bold.magenta;
+  if (!osName.search("Debian")) return osName.bold.red;
+  if (!osName.search("BunsenLabs GNU/Linux")) return osName.bold.red;
 
   return osName.bold.orange;
 }
 
-// Export the functions to be avaliable for main.js
+// Export the functions
 
 module.exports = {
   get_cpu,

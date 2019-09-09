@@ -1,22 +1,13 @@
 // Import functions from functions.js
 
-const fetch = require("./functions");
+const fetch = require("./functions"),
+  cmd = require("commander");
 
-// Library for the table output
-const Table = require("cli-table");
-const table = new Table();
-
-// * Main Program
-
-table.push(
-  { Hostname: fetch.get_hostname() },
-  { OS: fetch.get_os() },
-  { Release: fetch.get_release() },
-  { Shell: fetch.get_shell() },
-  { CPU: fetch.get_cpu() },
-  { GPU: fetch.get_gpu() },
-  { Memory: fetch.get_mem() },
-  { IP: fetch.get_ipAddress() }
-);
-
-console.log(table.toString()); // Print the table
+console.log(`${"Hostname".bold}:\t${fetch.get_hostname()}`);
+console.log(`${"OS".bold}:\t\t${fetch.get_os()}`);
+console.log(`${"Release".bold}:\t${fetch.get_release()}`);
+console.log(`${"Shell".bold}:\t\t${fetch.get_shell()}`);
+console.log(`${"CPU".bold}:\t\t${fetch.get_cpu()}`);
+console.log(`${"GPU".bold}:\t\t${fetch.get_gpu()}`);
+console.log(`${"Memory".bold}:\t\t${fetch.get_mem()}`);
+console.log(`${"IP".bold}:\t\t${fetch.get_ipAddress()}`);
