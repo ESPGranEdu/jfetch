@@ -1,2 +1,2 @@
 # jfetch
-A JavaScript fetch tool
+A JavaScript fetch tool for training purposes
