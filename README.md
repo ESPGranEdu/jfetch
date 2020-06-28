@@ -1,2 +1,5 @@
 # jfetch
-A JavaScript fetch tool for training purposes
+
+A TypesScript too that fetch system's info, similarly to other apps like neofetch
+
+This is repo is for training purposes

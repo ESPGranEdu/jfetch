@@ -1,6 +1,6 @@
 // Import functions from functions.js
 
-const fetch = require("./functions");
+import * as fetch from "./functions"
 
 console.log(`${"Hostname".bold}:\t${fetch.get_hostname()}`);
 console.log(`${"OS".bold}:\t\t${fetch.get_os()}`);
